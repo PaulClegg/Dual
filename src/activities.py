@@ -26,6 +26,6 @@ def readRawPhantomData(filename, verbose=True):
 
         f.close()
 
-    phantom = phantom.reshape((x_size, y_size, z_size))
+    phantom = np.flip(phantom.reshape((z_size, x_size, y_size)), axis=0)
 
     return phantom

@@ -9,6 +9,7 @@ import os
 
 sys.path.insert(0, '/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/src')
 import activities as tpA
+import simulation as tpS
 
 #@pytest.mark.skip()
 def test_readingRawPhantomData():
@@ -17,5 +18,6 @@ def test_readingRawPhantomData():
     path = os.path.join(data_stem, filename)
 
     phantom = tpA.readRawPhantomData(path)
+    tpS.displayPhantom(phantom)
 
     assert True
