@@ -14,3 +14,7 @@ def displayPhantom(phantom, verbose=True):
     plt.figure()
     plt.imshow(phantom[:, x_mid, :])
     plt.show()
+
+def expandPhantomToFrames(phantom, nframes, verbose=True):
+    if verbose:
+        print(phantom.shape)
