@@ -7,6 +7,7 @@ import struct
 import csv
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib import animation as ani
 
 def readRawPhantomData(filename, verbose=True):
     if verbose:
@@ -64,3 +65,36 @@ def readTAC(filename, verbose=True):
         plt.show()
 
     return time_vals, TAC_vals
+
+def addActivityToDynamicPhantom(dynamic, organ_code, activity, verbose=True):
+    (nframes, _, _, _) = dynamic.shape
+    assert nframes == len(activity), "activities: inconsistent framing!"
+
+    if verbose:
+        print(f"Organ code: {organ_code}")
+
+    for frame in range(nframes):
+        if verbose:
+            print(f"Frame number: {frame + 1}")
+        snapshot = dynamic[frame, :, :, :]
+        snapshot[snapshot == organ_code] = activity[frame]
+        dynamic[frame, :, :, :] = snapshot
+
+    if verbose:
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.set_aspect('equal')
+        ax.axis('off')
+        x_mid = dynamic.shape[2] // 2
+        im = ax.imshow(dynamic[0, :, x_mid, :], cmap='gray', 
+                interpolation='nearest')
+        fig.set_size_inches([5, 5])
+        plt.tight_layout()
+        #def update_frame(n):
+        #    im.set_data(dynamic[n, :, x_mid, :])
+        #return im,
+        #ani.FuncAnimation(fig, update_frame, frames=nframes, interval=30)
+        ###plt.imshow(dynamic[5, :, x_mid, :])
+        plt.show()
+
+    return dynamic

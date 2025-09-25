@@ -32,7 +32,7 @@ def test_readingFramedActivities():
 
     assert True
 
-#@pytest.mark.skip()
+@pytest.mark.skip()
 def test_expandPhantomToFrames():
     filename = "coded_out_act_1.bin"
     data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
@@ -41,6 +41,28 @@ def test_expandPhantomToFrames():
     nframes = 24
 
     phantom = tpA.readRawPhantomData(path)
-    tpS.expandPhantomToFrames(phantom, nframes)
+    dynamic = tpS.expandPhantomToFrames(phantom, nframes)
 
     assert True
+
+#@pytest.mark.skip()
+def test_addLiverActivityToPhantom():
+    act_file = "FDG_liver_framed.csv"
+    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    path = os.path.join(data_stem, act_file)
+    time, activity = tpA.readTAC(path, verbose=True)
+
+    filename = "coded_out_act_1.bin"
+    path = os.path.join(data_stem, filename)
+    nframes = len(time)
+    phantom = tpA.readRawPhantomData(path)
+    dynamic = tpS.expandPhantomToFrames(phantom, nframes)
+
+    organ_code = 7
+    dynamic = tpA.addActivityToDynamicPhantom(dynamic, organ_code, activity)
+
+    out_name = os.path.join(data_stem, "first_dynamic_phantom.npy")
+    tpS.writeDynamicPhantom(dynamic, out_name)
+
+    assert True
+

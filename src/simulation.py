@@ -18,3 +18,20 @@ def displayPhantom(phantom, verbose=True):
 def expandPhantomToFrames(phantom, nframes, verbose=True):
     if verbose:
         print(phantom.shape)
+
+    (nslices, x_size, y_size) = phantom.shape
+
+    dynamic = np.zeros((nframes, nslices, x_size, y_size))
+
+    dynamic[:, :, :, :] = phantom
+
+    if verbose:
+        print(dynamic.shape)
+
+    return dynamic
+
+def writeDynamicPhantom(dynamic, filename):
+    np.save(filename, dynamic)
+
+
+
