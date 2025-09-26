@@ -31,7 +31,8 @@ def expandPhantomToFrames(phantom, nframes, verbose=True):
     return dynamic
 
 def writeDynamicPhantom(dynamic, filename):
-    np.save(filename, dynamic)
+    sm_dynamic = np.array(dynamic, dtype=np.float16)
+    np.save(filename, sm_dynamic)
 
 
 

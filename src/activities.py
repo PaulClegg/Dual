@@ -88,13 +88,12 @@ def addActivityToDynamicPhantom(dynamic, organ_code, activity, verbose=True):
         x_mid = dynamic.shape[2] // 2
         im = ax.imshow(dynamic[0, :, x_mid, :], cmap='gray', 
                 interpolation='nearest')
-        fig.set_size_inches([5, 5])
         plt.tight_layout()
-        #def update_frame(n):
-        #    im.set_data(dynamic[n, :, x_mid, :])
-        #return im,
-        #ani.FuncAnimation(fig, update_frame, frames=nframes, interval=30)
-        ###plt.imshow(dynamic[5, :, x_mid, :])
+        def update_frame(n):
+            X = dynamic[n, :, x_mid, :]
+            im.set_array(X)
+        anim = ani.FuncAnimation(fig, update_frame, frames=nframes, 
+                interval=1000, repeat=False)
         plt.show()
 
     return dynamic
