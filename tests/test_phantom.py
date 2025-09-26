@@ -79,9 +79,10 @@ def test_addFDGActivityToPhantom():
     organ_codes = np.linspace(1, 18, 18, dtype=int)
     filenames = ["FDG_bone_framed.csv", "", "", "", "", 
             "FDG_pancreas_framed.csv", "FDG_liver_framed.csv", 
-            "FDG_muscle_framed.csv", "", "", "FDG_cleanblood_framed.csv", 
+            "FDG_muscle_framed.csv", "", "", 
+            "FDG_cleanbolus_framed.csv", 
             "FDG_kidneys_framed.csv", "FDG_spleen_framed.csv", 
-            "FDG_cleanblood_framed.csv", "", 
+            "FDG_cleanbolus_framed.csv", "", 
             "FDG_myocardium_framed.csv", "", ""]
     for code in organ_codes:
         name = filenames[code-1]
