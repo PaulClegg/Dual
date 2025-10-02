@@ -76,20 +76,23 @@ def test_addFDGActivityToPhantom():
     phantom = tpA.readRawPhantomData(path)
     dynamic = tpS.expandPhantomToFrames(phantom, nframes)
 
-    organ_codes = np.linspace(1, 18, 18, dtype=int)
-    filenames = ["FDG_bone_framed.csv", "", "", "", "", 
+    organ_codes = np.linspace(1, 20, 20, dtype=int)
+    filenames = ["FDG_bone_framed.csv", "", "", 
+            "FDG_blank_framed.csv", "FDG_blank_framed.csv", 
             "FDG_pancreas_framed.csv", "FDG_liver_framed.csv", 
             "FDG_muscle_framed.csv", "", "", 
             "FDG_cleanbolus_framed.csv", 
             "FDG_kidneys_framed.csv", "FDG_spleen_framed.csv", 
             "FDG_cleanbolus_framed.csv", "", 
-            "FDG_myocardium_framed.csv", "", ""]
+            "FDG_myocardium_framed.csv", "FDG_blank_framed.csv", 
+            "FDG_blank_framed.csv",
+            "FDG_lungs_framed.csv", "FDG_marrow_framed.csv"]
     for code in organ_codes:
         name = filenames[code-1]
         if len(name) > 2:
             path = os.path.join(data_stem, name)
             time, activity = tpA.readTAC(path, verbose=False)
-            if code < 16:
+            if code < 20:
                 dynamic = tpA.addActivityToDynamicPhantom(dynamic, code, 
                     activity, verbose=False)
             else:

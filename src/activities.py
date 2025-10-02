@@ -8,6 +8,7 @@ import csv
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import animation as ani
+import matplotlib.cm as cm
 
 def readRawPhantomData(filename, verbose=True):
     if verbose:
@@ -86,7 +87,8 @@ def addActivityToDynamicPhantom(dynamic, organ_code, activity, verbose=True):
         ax.set_aspect('equal')
         ax.axis('off')
         x_mid = dynamic.shape[2] // 2
-        im = ax.imshow(dynamic[0, :, x_mid, :], cmap='gray', 
+        dynamic[:, 0, x_mid, 0] = 45.0 # to set range on colour scale
+        im = ax.imshow(dynamic[0, :, x_mid, :], cmap=cm.Greys_r,
                 interpolation='nearest')
         plt.tight_layout()
         def update_frame(n):
@@ -95,5 +97,6 @@ def addActivityToDynamicPhantom(dynamic, organ_code, activity, verbose=True):
         anim = ani.FuncAnimation(fig, update_frame, frames=nframes, 
                 interval=1000, repeat=False)
         plt.show()
+        dynamic[:, 0, x_mid, 0] = 0.0 # reset
 
     return dynamic
