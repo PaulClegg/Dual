@@ -10,12 +10,12 @@ from matplotlib import pyplot as plt
 from matplotlib import animation as ani
 import matplotlib.cm as cm
 
-def readRawPhantomData(filename, verbose=True):
+def readRawPhantomData(filename, array=256, slices=301, verbose=True):
     if verbose:
         print(filename)
 
     size = 4
-    x_size = 256; y_size = 256; z_size = 301
+    x_size = array; y_size = array; z_size = slices
     phantom = np.zeros(x_size * y_size * z_size)
 
     i = 0

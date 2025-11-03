@@ -68,25 +68,25 @@ def test_addLiverActivityToPhantom():
     assert True
 
 #@pytest.mark.skip()
-def test_addFDGActivityToPhantom():
+def test_addActivityToPhantom():
     data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
     filename = "coded_out_act_1.bin"
     path = os.path.join(data_stem, filename)
-    nframes = 24
-    phantom = tpA.readRawPhantomData(path)
+    nframes = 43
+    phantom = tpA.readRawPhantomData(path, array=192, slices=201)
     dynamic = tpS.expandPhantomToFrames(phantom, nframes)
 
     organ_codes = np.linspace(1, 20, 20, dtype=int)
-    filenames = ["FDG_bone_framed.csv", "", "", 
-            "FDG_blank_framed.csv", "FDG_blank_framed.csv", 
-            "FDG_pancreas_framed.csv", "FDG_liver_framed.csv", 
-            "FDG_muscle_framed.csv", "", "", 
-            "FDG_cleanbolus_framed.csv", 
-            "FDG_kidneys_framed.csv", "FDG_spleen_framed.csv", 
-            "FDG_cleanbolus_framed.csv", "", 
-            "FDG_myocardium_framed.csv", "FDG_blank_framed.csv", 
-            "FDG_blank_framed.csv",
-            "FDG_lungs_framed.csv", "FDG_marrow_framed.csv"]
+    filenames = ["Bone_FDG_FAPI_dual.csv", "", "", 
+            "Blank_FDG_FAPI_dual.csv", "Blank_FDG_FAPI_dual.csv", 
+            "Pancreas_FDG_FAPI_dual.csv", "Liver_FDG_FAPI_dual.csv", 
+            "Muscle_FDG_FAPI_dual.csv", "", "", 
+            "Blood_FDG_FAPI_dual.csv", 
+            "Kidneys_FDG_FAPI_dual.csv", "Spleen_FDG_FAPI_dual.csv", 
+            "Blood_FDG_FAPI_dual.csv", "", 
+            "Myocardium_FDG_FAPI_dual.csv", "Blank_FDG_FAPI_dual.csv", 
+            "Blank_FDG_FAPI_dual.csv",
+            "Lungs_FDG_FAPI_dual.csv", "Bone_FDG_FAPI_dual.csv"]
     for code in organ_codes:
         name = filenames[code-1]
         if len(name) > 2:
@@ -99,7 +99,7 @@ def test_addFDGActivityToPhantom():
                 dynamic = tpA.addActivityToDynamicPhantom(dynamic, code, 
                     activity, verbose=True)
 
-    out_name = os.path.join(data_stem, "first_dynamic_phantom.npy")
+    out_name = os.path.join(data_stem, "first_dual_phantom.npy")
     tpS.writeDynamicPhantom(dynamic, out_name)
 
     assert True
