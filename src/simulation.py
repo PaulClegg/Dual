@@ -5,6 +5,7 @@ To create an analytical simulation of the XCAT phantom
 
 import numpy as np
 from matplotlib import pyplot as plt
+import nibabel as nib
 
 def displayPhantom(phantom, verbose=True):
     x_mid = phantom.shape[1] // 2
@@ -31,8 +32,6 @@ def expandPhantomToFrames(phantom, nframes, verbose=True):
     return dynamic
 
 def writeDynamicPhantom(dynamic, filename):
-    sm_dynamic = np.array(dynamic, dtype=np.float16)
+    dynamic *= 100.0
+    sm_dynamic = np.array(dynamic, dtype=np.ushort)
     np.save(filename, sm_dynamic)
-
-
-
