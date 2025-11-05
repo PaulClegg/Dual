@@ -67,7 +67,7 @@ def test_addLiverActivityToPhantom():
 
     assert True
 
-#@pytest.mark.skip()
+@pytest.mark.skip()
 def test_addActivityToPhantom():
     data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
     filename = "coded_out_act_1.bin"
@@ -101,6 +101,25 @@ def test_addActivityToPhantom():
 
     out_name = os.path.join(data_stem, "first_dual_phantom.npy")
     tpS.writeDynamicPhantom(dynamic, out_name)
+
+    assert True
+
+@pytest.mark.skip()
+def test_readAndSubsample():
+    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    in_file = "first_dual_phantom.npy"
+    out_file = "short_single_injection_phantom.npy"
+    in_name = os.path.join(data_stem, in_file)
+    out_name = os.path.join(data_stem, out_file)
+    num_frames = 29
+
+    tpS.readAndSubsamplePhantom(in_name, num_frames, out_name)
+
+    assert True
+
+#@pytest.mark.skip()
+def test_createTemplate():
+    tpS.createTemplate()
 
     assert True
 
