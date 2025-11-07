@@ -11,6 +11,8 @@ import numpy as np
 sys.path.insert(0, '/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/src')
 import activities as tpA
 import simulation as tpS
+sys.path.insert(0, '/home/pclegg/devel/SIRF-SuperBuild/docker/devel/IDIF/src')
+import PET_tools as tpT
 
 @pytest.mark.skip()
 def test_readingRawPhantomData():
@@ -70,10 +72,10 @@ def test_addLiverActivityToPhantom():
 @pytest.mark.skip()
 def test_addActivityToPhantom():
     data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
-    filename = "coded_out_act_1.bin"
+    filename = "biograph_out_act_1.bin"
     path = os.path.join(data_stem, filename)
     nframes = 43
-    phantom = tpA.readRawPhantomData(path, array=192, slices=201)
+    phantom = tpA.readRawPhantomData(path, array=285, slices=127)
     dynamic = tpS.expandPhantomToFrames(phantom, nframes)
 
     organ_codes = np.linspace(1, 20, 20, dtype=int)
@@ -117,9 +119,29 @@ def test_readAndSubsample():
 
     assert True
 
-#@pytest.mark.skip()
+@pytest.mark.skip()
 def test_createTemplate():
     tpS.createTemplate()
+
+    assert True
+
+@pytest.mark.skip()
+def test_createAttenuationMap():
+    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    filename = "biograph_out_atn_1.bin"
+    path = os.path.join(data_stem, filename)
+    umap = tpA.readRawPhantomData(path, array=285, slices=127)
+
+    out_name = os.path.join(data_stem, "phantom_umap.npy")
+    sm_umap = np.array(umap, dtype=np.float32)
+    np.save(out_name, sm_umap)
+
+    assert True
+
+#@pytest.mark.skip()
+def test_createTemplate():
+    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    tpT.create3Dtemplate(data_stem)
 
     assert True
 

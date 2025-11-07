@@ -49,3 +49,4 @@ def createTemplate():
     template_acq_data = sPET.AcquisitionData('Siemens_Biograph_Vision_Quadra', 
         span=11,
         max_ring_diff=15, view_mash_factor=2)
+
