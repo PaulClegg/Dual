@@ -14,6 +14,8 @@ import simulation as tpS
 sys.path.insert(0, '/home/pclegg/devel/SIRF-SuperBuild/docker/devel/IDIF/src')
 import PET_tools as tpT
 
+import sirf.STIR as tpPET
+
 @pytest.mark.skip()
 def test_readingRawPhantomData():
     filename = "coded_out_act_1.bin"
@@ -138,10 +140,45 @@ def test_createAttenuationMap():
 
     assert True
 
-#@pytest.mark.skip()
+@pytest.mark.skip()
 def test_createTemplate():
     data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
     tpT.create3Dtemplate(data_stem)
+
+    assert True
+
+#@pytest.mark.skip()
+def test_createOneSinogramAtATime():
+    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    in_file = "first_dual_phantom.npy"
+    in_name = os.path.join(data_stem, in_file)
+
+    norm_file = "attempt2a.n.hdr"
+    norm_name = os.path.join(data_stem, norm_file)
+
+    template_path = os.path.join(data_stem, "template3D.hs")
+    template = tpPET.AcquisitionData(template_path)
+
+    umap_file = "biograph_out_atn_1.bin"
+    umap_name = os.path.join(data_stem, umap_file)
+
+    umap_raw = tpA.readRawPhantomData(umap_name, array=285, slices=127)
+
+    example_file = "SinoSet1_ISTA_image.hv"
+    example_name = os.path.join(data_stem, example_file)
+    example_image = tpPET.ImageData(example_name)
+
+    attn_image = example_image.clone()
+    attn_image.fill(umap_raw)
+
+    image_data = example_image.clone()
+    num_frames = 3 # 43
+    print("\n")
+    for frame in range(num_frames):
+        image_raw = tpS.returnOneFrame(in_name, frame)
+        image_data.fill(image_raw)
+        print(frame)
+        rawPET = tpT.imageToSinogram(image_data, template, attn_image, norm_file)
 
     assert True
 

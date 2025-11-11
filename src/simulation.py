@@ -50,3 +50,7 @@ def createTemplate():
         span=11,
         max_ring_diff=15, view_mash_factor=2)
 
+def returnOneFrame(in_name, frame):
+    lg_dynamic = np.load(in_name, encoding="bytes")
+    image_data = lg_dynamic[frame, :, :, :]
+    return image_data
