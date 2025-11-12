@@ -178,7 +178,7 @@ def test_createOneSinogramAtATime():
         image_raw = tpS.returnOneFrame(in_name, frame)
         image_data.fill(image_raw)
         print(frame)
-        rawPET = tpT.imageToSinogram(image_data, template, attn_image, norm_file)
+        rawPET = tpT.imageToSinogram(image_data, template, attn_image, norm_name)
 
     assert True
 
