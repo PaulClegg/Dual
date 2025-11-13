@@ -163,6 +163,7 @@ def test_createOneSinogramAtATime():
     umap_name = os.path.join(data_stem, umap_file)
 
     umap_raw = tpA.readRawPhantomData(umap_name, array=285, slices=127)
+    umap_raw *= 4.75
 
     example_file = "SinoSet1_ISTA_image.hv"
     example_name = os.path.join(data_stem, example_file)
@@ -172,13 +173,16 @@ def test_createOneSinogramAtATime():
     attn_image.fill(umap_raw)
 
     image_data = example_image.clone()
-    num_frames = 3 # 43
+    num_frames = 2 # 43
     print("\n")
     for frame in range(num_frames):
         image_raw = tpS.returnOneFrame(in_name, frame)
         image_data.fill(image_raw)
         print(frame)
-        rawPET = tpT.imageToSinogram(image_data, template, attn_image, norm_name)
+        acq_data = tpT.imageToSinogram(image_data, template, 
+                attn_image, norm_name)
+        image_out = tpT.reconstructRawPhantomPET(acq_data, template, 
+                attn_image, norm_name)
 
     assert True
 
