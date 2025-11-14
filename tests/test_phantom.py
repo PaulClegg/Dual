@@ -81,13 +81,15 @@ def test_addActivityToPhantom():
     dynamic = tpS.expandPhantomToFrames(phantom, nframes)
 
     organ_codes = np.linspace(1, 20, 20, dtype=int)
-    filenames = ["Bone_FDG_FAPI_dual.csv", "", "", 
+    filenames = ["Bone_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
+            "Zero_FDG_FAPI_dual.csv", 
             "Blank_FDG_FAPI_dual.csv", "Blank_FDG_FAPI_dual.csv", 
             "Pancreas_FDG_FAPI_dual.csv", "Liver_FDG_FAPI_dual.csv", 
-            "Muscle_FDG_FAPI_dual.csv", "", "", 
+            "Muscle_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
+            "Zero_FDG_FAPI_dual.csv", 
             "Blood_FDG_FAPI_dual.csv", 
             "Kidneys_FDG_FAPI_dual.csv", "Spleen_FDG_FAPI_dual.csv", 
-            "Blood_FDG_FAPI_dual.csv", "", 
+            "Blood_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
             "Myocardium_FDG_FAPI_dual.csv", "Blank_FDG_FAPI_dual.csv", 
             "Blank_FDG_FAPI_dual.csv",
             "Lungs_FDG_FAPI_dual.csv", "Bone_FDG_FAPI_dual.csv"]
@@ -149,6 +151,8 @@ def test_createTemplate():
 
 #@pytest.mark.skip()
 def test_createOneSinogramAtATime():
+    Array = 285
+    Slices = 127
     data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
     in_file = "first_dual_phantom.npy"
     in_name = os.path.join(data_stem, in_file)
@@ -162,7 +166,7 @@ def test_createOneSinogramAtATime():
     umap_file = "biograph_out_atn_1.bin"
     umap_name = os.path.join(data_stem, umap_file)
 
-    umap_raw = tpA.readRawPhantomData(umap_name, array=285, slices=127)
+    umap_raw = tpA.readRawPhantomData(umap_name, array=Array, slices=Slices)
     umap_raw *= 4.75
 
     example_file = "SinoSet1_ISTA_image.hv"
@@ -173,7 +177,8 @@ def test_createOneSinogramAtATime():
     attn_image.fill(umap_raw)
 
     image_data = example_image.clone()
-    num_frames = 2 # 43
+    num_frames = 43
+    out_data = np.zeros((num_frames, Slices, Array, Array))
     print("\n")
     for frame in range(num_frames):
         image_raw = tpS.returnOneFrame(in_name, frame)
@@ -183,6 +188,11 @@ def test_createOneSinogramAtATime():
                 attn_image, norm_name)
         image_out = tpT.reconstructRawPhantomPET(acq_data, template, 
                 attn_image, norm_name)
+        out_data[frame, :, :, :] = image_out.as_array()
+
+    out_file = "Dual_Analytical.npy"
+    out_name = os.path.join(data_stem, out_file)
+    tpS.writeDynamicPhantom(out_data, out_name)
 
     assert True
 

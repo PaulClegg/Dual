@@ -34,7 +34,13 @@ def expandPhantomToFrames(phantom, nframes, verbose=True):
     return dynamic
 
 def writeDynamicPhantom(dynamic, filename):
-    dynamic *= 100.0
+    print("Writing out dynamic phantom\n")
+    if dynamic.max() < 650.0:
+        dynamic *= 100.0
+        print("Scaling up by 100\n")
+    elif dynamic.max() > 65535.0:
+        dynamic = (65535.0 / dynamic.max()) * dynamic
+        print("Scaling down\n")
     sm_dynamic = np.array(dynamic, dtype=np.ushort)
     np.save(filename, sm_dynamic)
 
