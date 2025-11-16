@@ -83,15 +83,15 @@ def test_addActivityToPhantom():
     organ_codes = np.linspace(1, 20, 20, dtype=int)
     filenames = ["Bone_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
             "Zero_FDG_FAPI_dual.csv", 
-            "Blank_FDG_FAPI_dual.csv", "Blank_FDG_FAPI_dual.csv", 
+            "Zero_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
             "Pancreas_FDG_FAPI_dual.csv", "Liver_FDG_FAPI_dual.csv", 
             "Muscle_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
             "Zero_FDG_FAPI_dual.csv", 
             "Blood_FDG_FAPI_dual.csv", 
             "Kidneys_FDG_FAPI_dual.csv", "Spleen_FDG_FAPI_dual.csv", 
             "Blood_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
-            "Myocardium_FDG_FAPI_dual.csv", "Blank_FDG_FAPI_dual.csv", 
-            "Blank_FDG_FAPI_dual.csv",
+            "Myocardium_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
+            "Zero_FDG_FAPI_dual.csv",
             "Lungs_FDG_FAPI_dual.csv", "Bone_FDG_FAPI_dual.csv"]
     for code in organ_codes:
         name = filenames[code-1]
