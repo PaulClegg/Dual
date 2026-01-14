@@ -8,10 +8,13 @@ import sys
 import os
 import numpy as np
 
-sys.path.insert(0, '/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/src')
+#HOME="/home/pclegg/devel/SIRF-SuperBuild/docker/devel"
+HOME="/home/jovyan/work"
+
+sys.path.insert(0, HOME + '/Dual/src')
 import activities as tpA
 import simulation as tpS
-sys.path.insert(0, '/home/pclegg/devel/SIRF-SuperBuild/docker/devel/IDIF/src')
+sys.path.insert(0, HOME + '/IDIF/src')
 import PET_tools as tpT
 
 import sirf.STIR as tpPET
@@ -19,7 +22,7 @@ import sirf.STIR as tpPET
 @pytest.mark.skip()
 def test_readingRawPhantomData():
     filename = "coded_out_act_1.bin"
-    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    data_stem = HOME + "/Dual/data"
     path = os.path.join(data_stem, filename)
 
     phantom = tpA.readRawPhantomData(path)
@@ -30,7 +33,7 @@ def test_readingRawPhantomData():
 @pytest.mark.skip()
 def test_readingFramedActivities():
     act_file = "FDG_liver_framed.csv"
-    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    data_stem = HOME + "/Dual/data"
     path = os.path.join(data_stem, act_file)
 
     time, activity = tpA.readTAC(path, verbose=True)
@@ -40,7 +43,7 @@ def test_readingFramedActivities():
 @pytest.mark.skip()
 def test_expandPhantomToFrames():
     filename = "coded_out_act_1.bin"
-    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    data_stem = HOME + "/Dual/data"
     path = os.path.join(data_stem, filename)
 
     nframes = 24
@@ -53,7 +56,7 @@ def test_expandPhantomToFrames():
 @pytest.mark.skip()
 def test_addLiverActivityToPhantom():
     act_file = "FDG_liver_framed.csv"
-    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    data_stem = HOME + "/Dual/data"
     path = os.path.join(data_stem, act_file)
     time, activity = tpA.readTAC(path, verbose=True)
 
@@ -73,7 +76,7 @@ def test_addLiverActivityToPhantom():
 
 @pytest.mark.skip()
 def test_addActivityToPhantom():
-    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    data_stem = HOME + "/Dual/data"
     filename = "biograph_out_act_1.bin"
     path = os.path.join(data_stem, filename)
     nframes = 43
@@ -112,7 +115,7 @@ def test_addActivityToPhantom():
 
 @pytest.mark.skip()
 def test_readAndSubsample():
-    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    data_stem = HOME + "/Dual/data"
     in_file = "first_dual_phantom.npy"
     out_file = "short_single_injection_phantom.npy"
     in_name = os.path.join(data_stem, in_file)
@@ -131,7 +134,7 @@ def test_createTemplate():
 
 @pytest.mark.skip()
 def test_createAttenuationMap():
-    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    data_stem = HOME + "/Dual/data"
     filename = "biograph_out_atn_1.bin"
     path = os.path.join(data_stem, filename)
     umap = tpA.readRawPhantomData(path, array=285, slices=127)
@@ -144,16 +147,16 @@ def test_createAttenuationMap():
 
 @pytest.mark.skip()
 def test_createTemplate():
-    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    data_stem = HOME + "/Dual/data"
     tpT.create3Dtemplate(data_stem)
 
     assert True
 
-#@pytest.mark.skip()
+@pytest.mark.skip()
 def test_createOneSinogramAtATime():
     Array = 285
     Slices = 127
-    data_stem = "/home/pclegg/devel/SIRF-SuperBuild/docker/devel/Dual/data"
+    data_stem = HOME + "/Dual/data"
     in_file = "first_dual_phantom.npy"
     in_name = os.path.join(data_stem, in_file)
 
@@ -193,6 +196,16 @@ def test_createOneSinogramAtATime():
     out_file = "Dual_Analytical.npy"
     out_name = os.path.join(data_stem, out_file)
     tpS.writeDynamicPhantom(out_data, out_name)
+
+    assert True
+
+#@pytest.mark.skip()
+def test_readAttenuationTableFile():
+    data_stem = HOME + "/Dual/data"
+    filename = "atten_table.dat"
+    path = os.path.join(data_stem, filename)
+
+    tpA.readAttenuation(path)
 
     assert True
 

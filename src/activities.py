@@ -100,3 +100,11 @@ def addActivityToDynamicPhantom(dynamic, organ_code, activity, verbose=True):
         dynamic[:, 0, x_mid, 0] = 0.0 # reset
 
     return dynamic
+
+def readAttenuation(filename, verbose=True):
+    if verbose:
+        print(filename)
+
+    organ_names = []
+    attenuations = []
+    
