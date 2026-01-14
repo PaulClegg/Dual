@@ -79,23 +79,23 @@ def test_addActivityToPhantom():
     data_stem = HOME + "/Dual/data"
     filename = "biograph_out_act_1.bin"
     path = os.path.join(data_stem, filename)
-    nframes = 43
+    nframes = 48
     phantom = tpA.readRawPhantomData(path, array=285, slices=127)
     dynamic = tpS.expandPhantomToFrames(phantom, nframes)
 
     organ_codes = np.linspace(1, 20, 20, dtype=int)
-    filenames = ["Bone_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
-            "Zero_FDG_FAPI_dual.csv", 
-            "Zero_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
-            "Pancreas_FDG_FAPI_dual.csv", "Liver_FDG_FAPI_dual.csv", 
-            "Muscle_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
-            "Zero_FDG_FAPI_dual.csv", 
-            "Blood_FDG_FAPI_dual.csv", 
-            "Kidneys_FDG_FAPI_dual.csv", "Spleen_FDG_FAPI_dual.csv", 
-            "Blood_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
-            "Myocardium_FDG_FAPI_dual.csv", "Zero_FDG_FAPI_dual.csv", 
-            "Zero_FDG_FAPI_dual.csv",
-            "Lungs_FDG_FAPI_dual.csv", "Bone_FDG_FAPI_dual.csv"]
+    filenames = ["Bone_FDG_FAPI_decay.csv", "Zero_FDG_FAPI_decay.csv", 
+            "Zero_FDG_FAPI_decay.csv", 
+            "Zero_FDG_FAPI_decay.csv", "Zero_FDG_FAPI_decay.csv", 
+            "Pancreas_FDG_FAPI_decay.csv", "Liver_FDG_FAPI_decay.csv", 
+            "Muscle_FDG_FAPI_decay.csv", "Zero_FDG_FAPI_decay.csv", 
+            "Zero_FDG_FAPI_decay.csv", 
+            "Blood_FDG_FAPI_decay.csv", 
+            "Kidneys_FDG_FAPI_decay.csv", "Spleen_FDG_FAPI_decay.csv", 
+            "Blood_FDG_FAPI_decay.csv", "Zero_FDG_FAPI_decay.csv", 
+            "Myocardium_FDG_FAPI_decay.csv", "Zero_FDG_FAPI_decay.csv", 
+            "Zero_FDG_FAPI_decay.csv",
+            "Lungs_FDG_FAPI_decay.csv", "Bone_FDG_FAPI_decay.csv"]
     for code in organ_codes:
         name = filenames[code-1]
         if len(name) > 2:
@@ -108,7 +108,7 @@ def test_addActivityToPhantom():
                 dynamic = tpA.addActivityToDynamicPhantom(dynamic, code, 
                     activity, verbose=True)
 
-    out_name = os.path.join(data_stem, "first_dual_phantom.npy")
+    out_name = os.path.join(data_stem, "first_decay_phantom.npy")
     tpS.writeDynamicPhantom(dynamic, out_name)
 
     assert True
@@ -157,7 +157,7 @@ def test_createOneSinogramAtATime():
     Array = 285
     Slices = 127
     data_stem = HOME + "/Dual/data"
-    in_file = "first_dual_phantom.npy"
+    in_file = "first_decay_phantom.npy"
     in_name = os.path.join(data_stem, in_file)
 
     norm_file = "attempt2a.n.hdr"
@@ -165,6 +165,7 @@ def test_createOneSinogramAtATime():
 
     template_path = os.path.join(data_stem, "template3D.hs")
     template = tpPET.AcquisitionData(template_path)
+    im_pet = tpPET.ImageData(template)
 
     umap_file = "biograph_out_atn_1.bin"
     umap_name = os.path.join(data_stem, umap_file)
@@ -180,7 +181,7 @@ def test_createOneSinogramAtATime():
     attn_image.fill(umap_raw)
 
     image_data = example_image.clone()
-    num_frames = 43
+    num_frames = 48
     out_data = np.zeros((num_frames, Slices, Array, Array))
     print("\n")
     for frame in range(num_frames):
@@ -193,7 +194,7 @@ def test_createOneSinogramAtATime():
                 attn_image, norm_name)
         out_data[frame, :, :, :] = image_out.as_array()
 
-    out_file = "Dual_Analytical.npy"
+    out_file = "Decay_Analytical.npy"
     out_name = os.path.join(data_stem, out_file)
     tpS.writeDynamicPhantom(out_data, out_name)
 
