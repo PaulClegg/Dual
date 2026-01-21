@@ -108,3 +108,31 @@ def readAttenuation(filename, verbose=True):
     organ_names = []
     attenuations = []
     
+    try:
+        with open(filename) as csvfile:
+            lines_in = csv.reader(csvfile)
+            line_number = 1
+            for row in lines_in:
+                entry_list = row[0].split("\t")
+                if line_number > 1:
+                    entry_list.remove("")
+                if line_number == 1 or entry_list[0] == "511.0":
+                    if line_number == 1:
+                        organ_names = entry_list
+                    else:
+                        for val in entry_list:
+                            attenuations.append(float(val))
+
+                line_number += 1
+
+    except IOError:
+        print("Attenuation file not accessible")
+
+    attenuation_dict = {}
+    for name, atten in zip(organ_names, attenuations):
+        attenuation_dict[name] = atten
+
+    return attenuation_dict
+
+#def uMapFromPhantom(
+#        snapshot[snapshot == organ_code] = activity[frame]
