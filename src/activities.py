@@ -5,6 +5,7 @@ To convert XCAT phantom into dynamic PET data
 
 import struct
 import csv
+import os
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import animation as ani
@@ -134,5 +135,70 @@ def readAttenuation(filename, verbose=True):
 
     return attenuation_dict
 
-#def uMapFromPhantom(
-#        snapshot[snapshot == organ_code] = activity[frame]
+def uMapFromPhantom(data_path, in_name, out_name, atten_dict, verbose=True):
+    path = os.path.join(data_path, in_name)
+    phantom = readRawPhantomData(path, array=285, slices=127)
+
+    # Key:
+    #tissueprop(8)  = 'muscle'
+    #tissueprop(19) = 'lungs'
+    #tissueprop(1)  = 'bone'
+    #tissueprop(2)  = 'fat'
+    #tissueprop(3)  = 'skin'
+    #tissueprop(4)  = 'colon'
+    #tissueprop(5)  = 'gastro'
+    #tissueprop(6)  = 'pancreas'
+    #tissueprop(7)  = 'liver'
+    #tissueprop(9)  = 'gallbladder'
+    #tissueprop(10) = 'adrenalgland'
+    #tissueprop(11) = 'vein'
+    #tissueprop(12) = 'kidney'
+    #tissueprop(13) = 'spleen'
+    #tissueprop(14) = 'artery'
+    #tissueprop(15) = 'ureter'
+    #tissueprop(16) = 'myocardium'
+    #tissueprop(17) = 'esophagus'
+    #tissueprop(18) = 'lymph'
+    #tissueprop(20) = 'bone marrow'
+
+    organ_dict = {}
+    organ_dict["lung"] = 19
+    organ_dict["dry_spine"] = 1
+    organ_dict["dry_rib"] = 1
+    organ_dict["skull"] = 1
+    organ_dict["adipose"] = 2
+    organ_dict["skin"] = 3
+    organ_dict["intestine"] = 5
+    organ_dict["pancreas"] = 6
+    organ_dict["liver"] = 7
+    organ_dict["muscle"] = 8
+    organ_dict["kidney"] = 12
+    organ_dict["spleen"] = 13
+    organ_dict["blood"] = 14
+    organ_dict["heart"] = 16
+    organ_dict["lymph"] = 18
+    #organ_dict["cartilage"] = 0.10400932
+    #organ_dict["brain"] = 0.099343632
+    organ_dict["red_marrow"] = 20
+    organ_dict["yellow_marrow"] = 20
+
+    # I need to check whether organ exists in organ_dict
+    # If it doesn't I should print it out - as this could help!
+
+    for organ, attenuation in atten_dict.items():
+        phantom[phantom == organ_dict[organ]] = attenuation
+
+    if verbose:
+        x_mid = phantom.shape[1] // 2
+        plt.figure()
+        plt.imshow(phantom[:, x_mid, :])
+        plt.show()
+
+        print(f"Minimum = {phantom.min()}")
+        print(f"Maximum = {phantom.max()}")
+
+    out_path = os.path.join(data_path, out_name)
+    print(out_path)
+    np.save(out_path, phantom)
+
+    
